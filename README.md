@@ -1,19 +1,16 @@
 # xd-helper
 
 #### 介绍
-在线编辑器支持七牛上传，参考地址：http://www.wangeditor.com/index.html
+vue cli 初始化vue项目基础模块（纯净版本）
 
-#### 安装教程
-npm install --save gxd-editer --registry=https://registry.npm.taobao.org
-
-##### 开发
+##### 项目下载与初始化
 
 ```bash
 # 克隆项目
-git clone git@gitee.com:e56buy/xd-editer.git
+git clone git@gitee.com:e56buy/xd-vue-base.git
 
 # 进入项目目录
-cd gxd-editer 
+cd xd-vue-base
 
 # 安装依赖
 npm install
@@ -25,19 +22,23 @@ npm install --save --registry=https://registry.npm.taobao.org
 npm run dev
 ```
 
-##### 使用
+##### 项目git迁移相关操作
 
 ```bash
-# 引入插件
+$ cd /project/
 
-import editer from 'gxd-editer';
+$ git remote remove origin  //与远端断开联系
 
-#七牛配置项
-Vue.use(editer,{
-  qiniu: [{
-    accoutKey: 'bP3Ca5dtSJBNaWwMkihfhuE30CbAZnYrNzQm6eMN', //七牛AK
-    serviceKey: 'pPNgWwRL3_Jlj7cPtpYbkhXn01EOZTtUhOs3NqZM', //七牛SK
-    webSiteName: 'e56buystatic', //七牛桶名称
-    staticUrl: 'http://static.e56buy.com' //静态域名访问地址
-  }]
-});
+$ git remote add origin git@github.com:xxxxxxxxxxxxxxxx.git  ///与远端建立联系
+
+$ git push -u -f origin master //把本地分支强制推送到远端
+
+$ git push --tags   //把本地tags强制推送到远端
+
+$ git push -u -f  --all origin 把所有分支推送到远端
+
+$ git config --global gitflow.multi-release true #建立多分枝
+$ git config --global gitflow.multi-hotfix true #建立多分枝
+
+```
+
