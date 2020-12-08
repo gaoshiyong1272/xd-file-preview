@@ -1,0 +1,5 @@
+'use strict';
+
+@import_modules@
+
+export default @modules_name@
