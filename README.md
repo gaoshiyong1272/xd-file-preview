@@ -1,4 +1,4 @@
-# xd-helper
+# Gxd-vue-base
 
 #### 介绍
 vue cli 初始化vue项目基础模块（纯净版本）
