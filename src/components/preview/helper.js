@@ -106,7 +106,70 @@ class Helper {
     }
   }
 
+  checkFileType(blob){
 
+  }
+
+  fileReaderBase64(blob){
+    return new Promise((resolve, reject)=>{
+      let reader = new FileReader();
+      reader.onload = (e)=> {
+        //console.log(e.target['result']);
+        resolve(e.target['result']);
+      };
+      reader.onerror = ()=>{
+        reject('读取文件错误')
+      }
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  getFileBase64(url='',name = '') {
+    return new Promise((resolve, reject) => {
+      let getName = ()=> {
+        let arr = url.split('/');
+        let reg = /^(.+)\.(.*)$/;
+        console.log('getName', arr[arr.length - 1], arr[arr.length - 1].match(reg));
+      };
+
+      let x = new XMLHttpRequest();
+      x.open("GET", url, true);
+      x.responseType = "blob";
+      x.onload = (e) => {
+        console.log(e.target['response']);
+        if (e.target['status'] === 200) {
+          //console.log(url);
+          let temp = {
+            type: this.checkFileType(e.target['response']),
+            size: e.target['response']['size'],
+            name: name ? name: getName(),
+          }
+          //console.log(temp);
+          this.fileReaderBase64(e.target['response'])
+            .then(res=>{
+              resolve(res);
+            })
+            .catch(res=>{
+              reject(res)
+            })
+        } else if (e.target['status'] === 404) {
+          console.error('error', e);
+          reject('您下载的文件不存在！');
+        } else {
+          console.error('error', e);
+
+          reject('网络错误！');
+        }
+      };
+      x.onerror = (e) => {
+        console.log('onerror')
+        console.log('error', e);
+        reject('网络错误！');
+      }
+      x.send();
+    })
+
+  }
 }
 
 export default new Helper();
