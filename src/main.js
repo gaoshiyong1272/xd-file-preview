@@ -1,7 +1,11 @@
 import Vue from 'vue'
 import App from './App.vue'
 
-Vue.config.productionTip = false
+
+import install from "@/install";
+Vue.use(install,{});
+
+Vue.config.productionTip = false;
 
 new Vue({
   render: h => h(App),

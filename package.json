@@ -12,9 +12,10 @@
   },
   "dependencies": {
     "core-js": "^2.6.10",
-    "vue": "^2.6.10",
     "gxd-helper": "^1.2.11",
-    "wangeditor": "^4.3.0"
+    "vue": "^2.6.10",
+    "vue-pdf": "^4.2.0",
+    "md5.js": "^1.3.5"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.12.0",
