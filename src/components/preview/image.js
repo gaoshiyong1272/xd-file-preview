@@ -8,11 +8,9 @@ import helper from "@/components/preview/helper";
  * @param options.fid 文件ID，唯一id（必填）
  * @param options.name 文件名称
  * @param options.type 文件类型
- * @param options.src //图片加载失败加载文件
  * @param options.url //图片地址
  */
 export default function (options) {
-	//console.log(options);
 	let str = `${options.name}${options['fid']}`;
 	let elId = `img-${helper.md5Fn(str)}`;
 	let ele = document.getElementById(elId);

@@ -1,7 +1,7 @@
 <template>
   <div class="pdf-preview" :id="options.ele" v-if="options && options.ele">
     <div class="pdf-preview-title">
-      <div class="pdf-preview-close" @click="close(options.ele)"><a-icon type="close-circle"/></div>
+      <div class="pdf-preview-close" @click="close(options.ele)"><i class="iconfont iconwrong"></i></div>
     </div>
     <div class="pdf-preview-content">
       <div class="pdf-preview-content-box">
@@ -16,13 +16,24 @@
   export default {
     name: "office-preview",
     props: {
-      options: Object,
+      options:{
+        type: Object|null,
+        default(){
+          return null
+        },
+      }
+    },
+    created(){
+      if(this.options) {
+        this.getUrl(this.options['source'])
+      }
+
     },
     watch: {
       options(val) {
         if (val) {
-          console.log(val)
-          this.getUrl(val)
+          console.log('options',val);
+          this.getUrl(val['source'])
         }
       }
     },
@@ -34,9 +45,7 @@
     },
     methods: {
       getUrl(val) {
-        if (/^.*\.(doc|docx|xls|xlsx|ppt|pptx)$/.test(val.url)) {
-          this.src = `${this.otherPreviewUrl}${val.url}&lang=${window.pdfLang}&llcc=${window.pdfLang}`;
-        }
+        this.src = `${this.otherPreviewUrl}${val}&lang=${window.pdfLang}&llcc=${window.pdfLang}`;
       }
     }
   };
@@ -101,7 +110,7 @@
   }
 
   .pdf-preview-content-box img {
-  
+
   }
 
   .pdf-preview-mask {

@@ -1,82 +1,146 @@
 <template>
-  <div class="pdf-preview" :id="options.ele" v-if="options && options.ele">
-    <div class="pdf-preview-title">
-      <div class="pdf-preview-close" @click="close(options.ele)">
-        <a-icon type="close-circle"/>
+  <div class="pdf-preview" v-if="info">
+    <div class="pdf-preview__title">
+      <div class="pdf-preview__title-text">
+        <input class="pdf-preview__input" v-model.number="page" type="number">
+        <span>/ {{numPages}}</span>
+        <button class="btn" @click="download">下载</button>
+        <span>{{info.name}}.{{options['type'].toLocaleLowerCase()}}</span>
       </div>
+      <div class="pdf-preview__title-close"><i class="iconfont iconwrong"></i></div>
     </div>
-    <div class="pdf-preview-content">
-      <div class="pdf-preview-content-box">
-        <iframe v-if="src" :src="src" height="100%" width="100%" frameborder="0"></iframe>
-        <div v-else ><a-spin/></div>
-      </div>
+    <div class="pdf-preview__content" :style="`width: ${getWdith}`">
+      <pdf
+        class="pdf-preview__content-pdf"
+        ref="pdf"
+        :src="src"
+        :page="page"
+        :rotate="rotate"
+        @password="password"
+        @progress="loadedRatio = $event"
+        @error="error"
+        @num-pages="numPages = $event"
+        @link-clicked="page = $event">
+      </pdf>
     </div>
+    <div class="img-preview__toolbar">
+      <span>
+        <i class="iconfont iconfangda" @click="zoomHandle(1)"></i>
+        <i class="iconfont iconsuoxiao" @click="zoomHandle(-1)"></i>
+        <i class="iconfont iconpageup" @click="overPage(-1)"></i>
+        <i class="iconfont iconpagedown" @click="overPage(1)"></i>
+        <i class="iconfont iconhuanyuan" @click="zoomOriginalSize()"></i>
+      </span>
+    </div>
+    <div class="img-preview__bottom"></div>
   </div>
 </template>
 <script>
-  window.pdfUrl = "";
-  import { getPdfbase46 } from '@/api/'
-  import helper from "./helper";
-  export default {
-    name: "pdf-preview",
-    props: {
-      options: Object,
-    },
-    watch: {
-      options(val) {
-        if (val) {
-          if(/^(data:application\/pdf).*$/.test(val.url)) {
-            this.getUrl(val)
-          }else{
-            this.checkCrossDomain(val);
-          }
-        }
-      }
-    },
+  import pdf from 'vue-pdf'
+  import helper from "@/components/preview/helper";
+  import download from 'downloadjs';
 
+  export default {
+    name: "xdPdfPreview",
+    props: {
+      options: {
+        type: Object|null,
+        default(){
+          return null
+        }
+      },
+    },
+    components: {pdf},
     data() {
       return {
-        pdfPreviewUrl: '/static/pdf/web/viewer.html',
-        src: '',
+        src: 'https://testimg.tiangongy.com/100601/3b85b4f1c3accdb4bb9f7e42e1f9070e',
+        loadedRatio: 0,
+        page: 1,
+        numPages: 0,
+        rotate: 0,
+        width: 0.5,
+        info: null,
       }
     },
+    watch:{
+      options(val){
+        this.info = val;
+      },
+    },
+    created(){
+      this.info = this.options;
+    },
+    computed:{
+      getWdith() {
+        return (this.width * 100) + '%';
+      },
+    },
     methods: {
-      /***
-       * 检测访问地址是否跨域
-       * @param val
+
+      download(){
+        console.log(this.info)
+        download(this.info['response'], this.info['name'])
+      },
+
+      /**
+       * @description 翻页处理
+       * @param type
        */
-      checkCrossDomain(val){
-        let host = helper.parseURL();
-        let pdfurl = helper.parseURL(val.url);
-        if (host.host !== pdfurl.host) {
-          this.getPdfBase64(val);
+      overPage(type){
+        if (this.page + type === 0) {
+          this.page = 1;
+        }
+        else if(this.page + type >= this.numPages){
+          this.page = this.numPages;
+        }
+        else{
+          this.page = this.page + type;
+        }
+      },
+
+      zoomOriginalSize(){
+        this.width = 0.5
+      },
+
+      /**
+       * @description 放大页面30-100之间
+       * @param type
+       */
+      zoomHandle(type){
+        if(type === 1) {
+          if (helper.addFloatNumber(this.width, 0.1) < 0.3) {
+            this.width = 0.3;
+          } else if (helper.addFloatNumber(this.width, 0.1) >= 1) {
+            this.width = 0.98;
+          } else {
+            this.width = helper.addFloatNumber(this.width, 0.1);
+          }
         }else{
-          this.getUrl(val)
+          if (helper.cutFloatNumber(this.width, 0.1) < 0.3) {
+            this.width = 0.3;
+          } else if (helper.cutFloatNumber(this.width, 0.1) >= 1) {
+            this.width = 0.98;
+          } else {
+            this.width = helper.cutFloatNumber(this.width, 0.1);
+          }
         }
       },
-      getPdfBase64(val){
-        getPdfbase46(val.url)
-          .then((res)=>{
-            if(res && res.code === 200) {
-              console.log(val);
-              val.url = res.response;
-              this.getUrl(val);
-            }
-          })
-          .catch((res)=>{
-            this.$message.error('操作失败');
-          });
+
+      password: function (updatePassword, reason) {
+        updatePassword(prompt('password is "test"'));
       },
-      getUrl(val) {
-        if (/^.*(\.pdf)$/.test(val.url) || /^(data:application\/pdf).*$/.test(val.url)) {
-          window.pdfUrl = val.url;
-          this.src = this.pdfPreviewUrl;
-        }
+      error: function (err) {
+        console.log(err);
       }
     }
   };
 </script>
-<style>
+<style type="text/css">
+  @import "style.css";
+  i.iconfont {
+    font-size: 30px;
+    font-weight: normal;
+  }
   .pdf-preview {
     position: fixed;
     top: 0;
@@ -87,61 +151,120 @@
     height: 100%;
     min-width: 1000px;
     min-height: 300px;
-    background: rgba(0, 0, 0, 1);
+    background: rgba(0, 0, 0, .6);
     z-index: 10000;
+    padding-top: 50px;
+    box-sizing: border-box;
   }
-
-  .pdf-preview-title {
+  .pdf-preview__title {
     position: absolute;
-    top: 15px;
-    right: 14px;
-    width: 18px;
-    height: 18px;
+    background: #333;
+    top: 0;
+    right: 0;
+    left:0;
+    width: 100%;
+    height: 50px;
+    padding: 0 0 0 10px;
+    box-sizing: border-box;
     color: #fff;
     z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
   }
-
-  .pdf-preview-close {
+  .pdf-preview__title-close {
     cursor: pointer;
     font-size: 18px;
-    width: 100%;
-    height: 100%;
-    line-height: 18px;
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
   }
-
-  .pdf-preview-close .el-icon-close {
-    font-weight: bold;
-  }
-
-  .pdf-preview-content {
-    height: -moz-calc(100% - 0);
-    height: -webkit-calc(100% - 0);
-    height: calc(100% - 0);
+  .pdf-preview__content {
+    height: -moz-calc(100% - 55px);
+    height: -webkit-calc(100% - 55px);
+    height: calc(100% - 55px);
     height: 100%;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     position: relative;
     z-index: 9;
+    margin: 0 auto;
   }
-
-  .pdf-preview-content-box {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-    flex-wrap: nowrap;
-    height: 100%;
-  }
-
-  .pdf-preview-content-box img {
-  
-  }
-
-  .pdf-preview-mask {
+  .img-preview__toolbar {
     position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+    font-size: 0;
+    left: 50%;
+    bottom: 30px;
+    text-align: center;
+    transform: translateX(-50%);
+    z-index: 10000
   }
+  .img-preview__toolbar span {
+    display: flex;
+    line-height: 24px;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 0;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  .img-preview__toolbar span * {
+    margin: 0 6px;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+    font-weight: 400;
+  }
+  .pdf-preview__title-text {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .pdf-preview__title-text span {
+    padding: 0 20px 0 10px;
+  }
+  .pdf-preview__title-text .btn {
+    background: #4395ff;
+    font-size: 14px;
+    height: 30px;
+    max-height: 30px;
+    border-radius: 15px;
+    padding: 0 20px;
+    outline: none;
+    border: 1px solid #4395ff;
+    color: #fff;
+    box-shadow: 0 0 0 rgba(0,0,0,0);
+    transition: all .5s;
+  }
+
+  .pdf-preview__title-text .btn:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+    opacity: 0.9;
+    background: #539dfc;
+    cursor: pointer;
+  }
+
+  .pdf-preview__title-text .pdf-preview__input {
+    font-size: 14px;
+    height: 30px;
+    max-height: 30px;
+    border-radius: 15px;
+    background-color: #fff;
+    padding: 0 20px;
+    width: 50px;
+    text-align: center;
+    outline: none;
+  }
+  .img-preview__bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: #333;
+    z-index: 10;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  }
+
 
 </style>

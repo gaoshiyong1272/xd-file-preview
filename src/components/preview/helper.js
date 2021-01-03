@@ -1,13 +1,10 @@
+'use strict';
+
 const MD5 = require('md5.js');
+import {iconData, typeHeader } from "@/components/contact";
 
 class Helper {
-  constructor(){
-    this.isArray = [
-      'JPEG','JPG','PNG','GIF',
-      'PDF',
-      'XLS', 'PPT', 'DOC', 'DOCX', 'XLSX', 'PPTX'
-    ];
-  }
+
 
   hideScroll(type){
     let body = document.getElementsByTagName('body')[0];
@@ -86,30 +83,23 @@ class Helper {
     };
   }
 
-  checkCrossDomain(url) {
-    let host = this.parseURL();
-    let urlHost = this.parseURL(url);
-
-    if (urlHost.host === host.host) {
-      return false;
-    }
-    console.error('访问地址跨域访问,请联系技术人员及时处理！');
-    return true;
-  }
-
-  checkIsPreview(obj){
-    if(JSON.stringify(this.isArray).indexOf(obj.type.toLocaleUpperCase()) > -1){
-      return true;
-    }
-    else {
-      return false;
-    }
-  }
-
+  /***
+   * @description 获取文件类型
+   * @param blob
+   */
   checkFileType(blob){
-
+    let type = typeHeader['unkown'];
+    if(typeHeader[blob.type]) {
+      type = typeHeader[blob.type];
+    }
+    return type;
   }
 
+  /**
+   * @description 获取文件base64流
+   * @param blob
+   * @returns {Promise<unknown>}
+   */
   fileReaderBase64(blob){
     return new Promise((resolve, reject)=>{
       let reader = new FileReader();
@@ -124,12 +114,19 @@ class Helper {
     });
   }
 
+  /**
+   * @description 获取文件相关信息
+   * @param url
+   * @param name
+   * @returns {Promise<unknown>}
+   */
   getFileBase64(url='',name = '') {
     return new Promise((resolve, reject) => {
       let getName = ()=> {
         let arr = url.split('/');
         let reg = /^(.+)\.(.*)$/;
-        console.log('getName', arr[arr.length - 1], arr[arr.length - 1].match(reg));
+        //console.log('getName', arr[arr.length - 1], arr[arr.length - 1].match(reg));
+        return arr[arr.length - 1];
       };
 
       let x = new XMLHttpRequest();
@@ -143,11 +140,14 @@ class Helper {
             type: this.checkFileType(e.target['response']),
             size: e.target['response']['size'],
             name: name ? name: getName(),
-          }
-          //console.log(temp);
+          };
+
           this.fileReaderBase64(e.target['response'])
             .then(res=>{
-              resolve(res);
+              temp['url'] = res;
+              temp['icon'] = this.getIcon(temp['type']);
+              temp['response'] = e.target['response'];
+              resolve(temp);
             })
             .catch(res=>{
               reject(res)
@@ -157,7 +157,6 @@ class Helper {
           reject('您下载的文件不存在！');
         } else {
           console.error('error', e);
-
           reject('网络错误！');
         }
       };
@@ -170,6 +169,86 @@ class Helper {
     })
 
   }
+
+  /**
+   * @description 获取图片相应的图片
+   * @param type
+   * @returns {string}
+   */
+  getIcon(type='') {
+    let temp = '';
+    if(iconData[type.toLocaleLowerCase()]) {
+      temp = iconData[type.toLocaleLowerCase()];
+    }
+    return temp;
+  }
+
+
+  /**
+   * @description 判断俩个需要处理的数字谁的小数点后位数多，
+   * 以多的为准，值乘以10的小数位的幂数，相加以后，再除以10的小数位的幂数
+   * @param currentNum
+   * @param targetNum
+   */
+  checkFloatMore(currentNum, targetNum){
+    let sq1, sq2;
+    try {sq1 = currentNum.toString().split(".")[1].length;}
+    catch (e) {sq1 = 0;}
+    try {sq2 = targetNum.toString().split(".")[1].length;}
+    catch (e) {sq2 = 0;}
+    return Math.pow(10, Math.max(sq1, sq2));
+  }
+
+  /**
+   * @description 两个小数相加
+   * @param currentNum
+   * @param targetNum
+   * @return number
+   */
+  addFloatNumber(currentNum, targetNum){
+    let power = this.checkFloatMore(currentNum, targetNum);
+    return (currentNum * power + targetNum * power) / power;
+  }
+
+  /**
+   * @description 两个小数减
+   * @param currentNum
+   * @param targetNum
+   * @return number
+   */
+  cutFloatNumber(currentNum, targetNum) {
+    let power = this.checkFloatMore(currentNum, targetNum);
+    return (currentNum * power - targetNum * power) / power;
+  }
+
+  /**
+   * @description 计算两个小数相乘
+   * @param currentNum
+   * @param targetNum
+   * @returns {number}
+   */
+  multiplyFloatNumber(currentNum, targetNum){
+    let m = 0, s1 = currentNum.toString(), s2 = targetNum.toString();
+    try {m += s1.split(".")[1].length;} catch (e) {}
+    try {m += s2.split(".")[1].length;} catch (e) {}
+    return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
+  }
+
+  /**
+   * @description 计算两个小数相除
+   * @param currentNum
+   * @param targetNum
+   * @returns {number}
+   */
+  divisionFloatNumber(currentNum, targetNum){
+    let t1 = 0, t2 = 0, r1, r2;
+    try {t1 = currentNum.toString().split(".")[1].length} catch (e) {}
+    try {t2 = targetNum.toString().split(".")[1].length} catch (e) {}
+    r1 = Number(currentNum.toString().replace(".", ""))
+    r2 = Number(targetNum.toString().replace(".", ""))
+    return (r1 / r2) * Math.pow(10, t2 - t1);
+  }
+
 }
 
 export default new Helper();
