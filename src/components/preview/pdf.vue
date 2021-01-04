@@ -1,5 +1,5 @@
 <template>
-  <div class="pdf-preview" v-if="info">
+  <div class="pdf-preview" :id="options.ele" v-if="info">
     <div class="pdf-preview__title">
       <div class="pdf-preview__title-text">
         <input class="pdf-preview__input" v-model.number="page" type="number">
@@ -7,7 +7,7 @@
         <button class="btn" @click="download">下载</button>
         <span>{{info.name}}.{{options['type'].toLocaleLowerCase()}}</span>
       </div>
-      <div class="pdf-preview__title-close"><i class="iconfont iconwrong"></i></div>
+      <div class="pdf-preview__title-close" @click="closeHandle(options.ele)"><i class=" iconfont iconwrong"></i></div>
     </div>
     <div class="pdf-preview__content" :style="`width: ${getWdith}`">
       <pdf
@@ -53,7 +53,7 @@
     components: {pdf},
     data() {
       return {
-        src: 'https://testimg.tiangongy.com/100601/3b85b4f1c3accdb4bb9f7e42e1f9070e',
+        src: '',
         loadedRatio: 0,
         page: 1,
         numPages: 0,
@@ -65,6 +65,9 @@
     watch:{
       options(val){
         this.info = val;
+        if(this.info['url']) {
+          this.src = this.info['url'];
+        }
       },
     },
     created(){
@@ -76,6 +79,9 @@
       },
     },
     methods: {
+      closeHandle(id) {
+        this.close(id);
+      },
 
       download(){
         console.log(this.info)

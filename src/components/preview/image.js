@@ -11,26 +11,7 @@ import helper from "@/components/preview/helper";
  * @param options.url //图片地址
  */
 export default function (options) {
-	let str = `${options.name}${options['fid']}`;
-	let elId = `img-${helper.md5Fn(str)}`;
-	let ele = document.getElementById(elId);
-
-	if(ele) {
-		ele.style.display="block";
-		helper.hideScroll(1);
-		return;
-	}
-	const Preview = Vue.extend(imgPreview);
-	let previewComponent = new Preview({
-		el: document.createElement('div')
-	});
-	options['ele'] = elId;
-	previewComponent.options = options;
-	previewComponent.close = (id)=> {
-		let ele = document.getElementById(id);
-		ele.style.display = "none";
-		helper.hideScroll(-1);
-	};
-	document.body.appendChild(previewComponent.$el);
+	let $vm = helper.createElement(options, Vue, imgPreview);
 	helper.hideScroll(1);
+	document.body.appendChild($vm.$el);
 }

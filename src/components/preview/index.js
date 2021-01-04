@@ -1,10 +1,37 @@
 'use strict';
+import Vue from 'vue';
 
 import image from "@/components/preview/image";
 import office from "@/components/preview/office";
 import pdf from "@/components/preview/pdf";
 import helper from "@/components/preview/helper";
 import {iconData, imagesType , wordType, pdfType} from '@/components/contact';
+import Loading from "@/components/preview/loading";
+
+/**
+ * @description 创建loading实例
+ * @type {ExtendedVue<Vue, unknown, unknown, unknown, Record<never, any>>}
+ */
+const loadingVue = Vue.extend(Loading);
+let $loading = new loadingVue({
+  el: document.createElement('div'),
+  props: {
+    show: {
+      type: Boolean,
+      default: true
+    }
+  }
+});
+document.body.appendChild($loading.$el);
+
+/**
+ * @description 销毁loading实例
+ */
+const $destroy = () => {
+  $loading.$destroy();
+  $loading.$el.parentNode.removeChild($loading.$el);
+};
+
 
 /**
  * @description 文件预览功能
@@ -18,6 +45,7 @@ export function preview(options={}) {
   options['source'] = options['url'];
   helper.getFileBase64(options.url, options.name)
     .then(res=>{
+      $destroy();
       options = Object.assign({}, options, res);
       options['status'] = true;
 

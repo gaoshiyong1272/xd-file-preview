@@ -249,6 +249,40 @@ class Helper {
     return (r1 / r2) * Math.pow(10, t2 - t1);
   }
 
+  /**
+   * @description 创建node节点
+   * @param options {object}
+   * @param options.fid 文件ID，唯一id（必填）
+   * @param options.name 文件名称（选填）
+   * @param options.url //文件地址（必填）
+   * @param Vue Vue类 （必填）
+   * @param view vue文件（必填）
+   */
+  createElement(options, Vue, view){
+    let str = `${options.name}${options['fid']}`;
+    let elId = `img-${this.md5Fn(str)}`;
+    let ele = document.getElementById(elId);
+
+    if (ele) {
+      ele.style.display = "block";
+      this.hideScroll(1);
+      return ele;
+    }
+
+    const View = Vue.extend(view);
+    let $view = new View({
+      el: document.createElement('div')
+    });
+    options['ele'] = elId;
+    $view.options = options;
+    $view.close = (id) => {
+      let ele = document.getElementById(id);
+      ele.style.display = "none";
+      this.hideScroll(-1);
+    };
+    return $view;
+  }
+
 }
 
 export default new Helper();

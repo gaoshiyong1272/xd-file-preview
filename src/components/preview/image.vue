@@ -1,10 +1,11 @@
 <template>
-  <div class="img-preview" :id="options.ele" v-if="options && options.ele">
+  <div class="img-preview" :id="options.ele" v-if="info && options && options.ele">
     <div class="img-preview-title" ref="imgPreviewHeader">
       <div class="img-preview-l">
-        <i class="el-icon-picture-outline"></i>
+        <i class="iconfont icontupian"></i>
         <span v-html="options.name"></span>
-        <span>{{options.type}}</span>
+        <span>.{{options['type'].toLocaleLowerCase()}}</span>
+        <button class="btn" @click="download">下载</button>
       </div>
       <div class="img-preview-close" @click="closeHandle(options.ele)"><i class="iconfont iconwrong"></i></div>
     </div>
@@ -49,6 +50,7 @@
 <script>
   import lodash from "lodash";
   import {iconData} from '@/components/contact'
+  import download from 'downloadjs';
 
   window.timeer = null;
   window.zoomTimeer = null;
@@ -62,6 +64,11 @@
       options: Object,
     },
 
+    watch: {
+      options(val) {
+        this.info = val
+      }
+    },
     data() {
       return {
         /**image**/
@@ -92,8 +99,10 @@
         windowWidth: 0,
         windowHeight: 0,
         loadingEle: '',
-        loadingUrl: iconData.loadicon
+        loadingUrl: iconData.loadicon,
         /**image**/
+
+        info: null,
       }
     },
 
@@ -124,6 +133,12 @@
       //window.bodyEle.addEventListener('select', window.boxyEleStop, false);
     },
     methods: {
+
+      download() {
+        console.log(this.info)
+        download(this.info['response'], this.info['name'])
+      },
+
       loadhandle() {
         let img = this.$refs.imgPreview;
 
@@ -298,7 +313,30 @@
     padding-left: 15px;
   }
 
-  .img-preview-l .el-icon-picture-outline {
+  .img-preview-l .btn {
+    background: #4395ff;
+    margin-left: 20px;
+    font-size: 14px;
+    height: 30px;
+    max-height: 30px;
+    border-radius: 15px;
+    padding: 0 20px;
+    outline: none;
+    border: 1px solid #4395ff;
+    color: #fff;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    transition: all .5s;
+  }
+
+  .img-preview-l .btn:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+    opacity: 0.9;
+    background: #539dfc;
+    cursor: pointer;
+  }
+
+
+  .img-preview-l .icontupian {
     font-size: 30px;
     margin-right: 10px;
   }
@@ -328,7 +366,7 @@
   }
 
   i.iconfont.iconzuozhuan, i.iconfont.iconyouzhuan, i.iconfont.iconhuanyuan {
-    font-size: 23px;
+    font-size: 28px;
     font-weight: normal !important;
   }
 
