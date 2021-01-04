@@ -4,7 +4,23 @@
 
 vue cli 文件在线预览展示功能
 
-##### 项目下载与初始化
+## 安装
+```
+npm install vue-file-preview --save --registry  https://registry.npm.taobao.org
+```
+
+## 插件全局引用
+``` javascript
+
+import vueFilePreview from 'gxd-file-preview';
+
+//初始化自定义插件
+Vue.use(vueFilePreview,{});
+
+
+```
+
+##### 项目开发下载与初始化
 
 ```bash
 # 克隆项目
