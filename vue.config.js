@@ -17,7 +17,7 @@ function resolve(dir) {
  * @description 根据环境入口使用的插件
  * @type {CreatedComponentsPlugin[]}
  */
-let plugins = [new CreatedComponentsPlugin()];
+let plugins = [];
 //console.log(process.env.npm_lifecycle_script.indexOf('gxdVue'), process.env);
 if(process.env.npm_lifecycle_script.indexOf('gxdVue') !== -1) {
   plugins.push(new UglifyJsPlugin({
@@ -83,7 +83,14 @@ module.exports = {
     plugins
   },
 
-  chainWebpack(config) {
-
+  chainWebpack: (config) => {
+    config.module
+      .rule('worker')
+      .test(/\.worker\.js$/)
+      .use('worker-loader').loader('worker-loader')
+      .options({
+        inline: true,
+        fallback: false
+      }).end();
   }
 };

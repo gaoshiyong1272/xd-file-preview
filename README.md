@@ -1,43 +1,55 @@
-# xd-helper
+# Gxd-vue-file-preview
 
 #### 介绍
-在线编辑器支持七牛上传，参考地址：http://www.wangeditor.com/index.html
 
-#### 安装教程
-npm install --save gxd-editer --registry=https://registry.npm.taobao.org
+vue cli 文件在线预览展示功能
 
-##### 开发
+##### 项目下载与初始化
 
 ```bash
 # 克隆项目
-git clone git@gitee.com:e56buy/xd-editer.git
+git clone git@gitee.com:e56buy/xd-file-preview.git
 
 # 进入项目目录
-cd gxd-editer 
+cd xd-file-preview
 
 # 安装依赖
 npm install
 
-# 建议不要直接使用 cnpm 安装依赖，会有各种诡异的 bug。可以通过如下操作解决 npm 下载速度慢的问题
+# 建议不要直接使用 cnpm 安装依赖，会有各种诡异的 bug。
+建议通过npm按照，通过如下操作解决 npm 下载速度慢的问题
 npm install --save --registry=https://registry.npm.taobao.org
+```
+##### Nginx配置静态资源可以跨域访问
+```text
 
-# 启动服务
-npm run dev
+#全局模式
+
+server {
+    listen       80;
+    add_header 'Access-Control-Allow-Origin' '*';
+    location /Roboto/ {
+        root   /home/images;
+        autoindex on;
+    }
+}
+
+#文件路径配置访问
+
+#访问路径拼接img访问本地绝对路径下的某图片 
+location /img/ {
+    #跨域配置，如果不生效请先清除浏览器缓存数据
+    add_header 'Access-Control-Allow-Origin' '*';
+    add_header 'Access-Control-Allow-Credentials' 'true';
+    add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+    add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
+    expires      30d;
+    #当访问https://server_name/img/路径时，就会访问本的/Users/chokshen/Desktop/img/文件夹
+    root /Users/chokshen/Desktop/;
+    error_log off;
+    access_log /dev/null;
+    autoindex on;
+}
+
 ```
 
-##### 使用
-
-```bash
-# 引入插件
-
-import editer from 'gxd-editer';
-
-#七牛配置项
-Vue.use(editer,{
-  qiniu: [{
-    accoutKey: 'bP3Ca5dtSJBNaWwMkihfhuE30CbAZnYrNzQm6eMN', //七牛AK
-    serviceKey: 'pPNgWwRL3_Jlj7cPtpYbkhXn01EOZTtUhOs3NqZM', //七牛SK
-    webSiteName: 'e56buystatic', //七牛桶名称
-    staticUrl: 'http://static.e56buy.com' //静态域名访问地址
-  }]
-});
