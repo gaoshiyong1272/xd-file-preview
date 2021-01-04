@@ -68,6 +68,7 @@ export function preview(options={}) {
     .catch(res=>{
       console.log('res',options);
       options['status'] = false;
+      $destroy();
       image(options);
     });
 }

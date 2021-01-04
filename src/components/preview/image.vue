@@ -1,7 +1,7 @@
 <template>
   <div class="img-preview" :id="options.ele" v-if="info && options && options.ele">
     <div class="img-preview-title" ref="imgPreviewHeader">
-      <div class="img-preview-l">
+      <div class="img-preview-l" v-if="options.status">
         <img :src="options.icon" width="30" height="30">
         <span v-html="options.name"></span>
         <span>.{{options['type'].toLocaleLowerCase()}}</span>
