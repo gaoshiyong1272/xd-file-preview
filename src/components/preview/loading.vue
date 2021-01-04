@@ -7,7 +7,7 @@
 </template>
 
 <script>
-  import {iconData} from '@/components/contact'
+  import {iconData} from './../contact'
   export default {
     name: "loading",
     props: ['show'],

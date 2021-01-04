@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import imgPreview  from "./image.vue";
-import helper from "@/components/preview/helper";
+import helper from "./helper";
 
 /**
  * @description 图片预览功能

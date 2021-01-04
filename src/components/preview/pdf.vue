@@ -38,7 +38,7 @@
 </template>
 <script>
   import pdf from 'vue-pdf'
-  import helper from "@/components/preview/helper";
+  import helper from "./helper";
   import download from 'downloadjs';
 
   export default {

@@ -5,8 +5,8 @@
 vue cli 文件在线预览展示功能
 
 ## 安装
-```
-npm install vue-file-preview --save --registry  https://registry.npm.taobao.org
+```bash
+npm i gxd-file-preview --save --registry  https://registry.npm.taobao.org
 ```
 
 ## 插件全局引用

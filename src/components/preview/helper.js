@@ -1,7 +1,7 @@
 'use strict';
 
 const MD5 = require('md5.js');
-import {iconData, typeHeader } from "@/components/contact";
+import {iconData, typeHeader } from "./../contact";
 
 class Helper {
 

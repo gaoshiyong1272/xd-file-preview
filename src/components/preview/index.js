@@ -1,12 +1,12 @@
 'use strict';
 import Vue from 'vue';
 
-import image from "@/components/preview/image";
-import office from "@/components/preview/office";
-import pdf from "@/components/preview/pdf";
-import helper from "@/components/preview/helper";
-import {iconData, imagesType , wordType, pdfType} from '@/components/contact';
-import Loading from "@/components/preview/loading";
+import image from "./image";
+import office from "./office";
+import pdf from "./pdf";
+import helper from "./helper";
+import {iconData, imagesType , wordType, pdfType} from './../contact';
+import Loading from "./loading";
 
 /**
  * @description 创建loading实例

@@ -49,7 +49,7 @@
 </template>
 <script>
   import lodash from "lodash";
-  import {iconData} from '@/components/contact'
+  import {iconData} from './../contact'
   import download from 'downloadjs';
 
   window.timeer = null;

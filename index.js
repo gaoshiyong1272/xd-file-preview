@@ -1,5 +1,5 @@
-import {preview} from "@/components/preview";
-import helper from "@/components/preview/helper";
+import {preview} from "./src/components/preview";
+import helper from "./src/components/preview/helper";
 
 // 定义 install 方法
 const install = function (Vue, options) {
