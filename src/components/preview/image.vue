@@ -2,7 +2,7 @@
   <div class="img-preview" :id="options.ele" v-if="info && options && options.ele">
     <div class="img-preview-title" ref="imgPreviewHeader">
       <div class="img-preview-l">
-        <i class="iconfont icontupian"></i>
+        <img :src="options.icon" width="30" height="30">
         <span v-html="options.name"></span>
         <span>.{{options['type'].toLocaleLowerCase()}}</span>
         <button class="btn" @click="download">下载</button>
@@ -299,9 +299,14 @@
 
   .img-preview-title {
     width: 100%;
-    height: 60px;
-    background: #000;
+    height: 48px;
+    background: rgba(0, 0, 0, 0.5);
     color: #fff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  }
+
+  .img-preview-l img {
+    margin-right: 15px;
   }
 
   .img-preview-l {
@@ -310,7 +315,7 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding-left: 15px;
+    padding-left:10px;
   }
 
   .img-preview-l .btn {
@@ -356,7 +361,7 @@
     font-size: 30px;
     width: 30px;
     height: 30px;
-    margin: 15px 15px 0 0;
+    margin: 9px 7px 0 0;
     line-height: 30px;
   }
 

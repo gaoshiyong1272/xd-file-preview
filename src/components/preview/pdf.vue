@@ -2,6 +2,7 @@
   <div class="pdf-preview" :id="options.ele" v-if="info">
     <div class="pdf-preview__title">
       <div class="pdf-preview__title-text">
+        <img :src="options.icon" height="30" width="30">
         <input class="pdf-preview__input" v-model.number="page" type="number">
         <span>/ {{numPages}}</span>
         <button class="btn" @click="download">下载</button>
@@ -159,7 +160,7 @@
     min-height: 300px;
     background: rgba(0, 0, 0, .6);
     z-index: 10000;
-    padding-top: 50px;
+    padding-top: 48px;
     box-sizing: border-box;
   }
   .pdf-preview__title {
@@ -169,7 +170,7 @@
     right: 0;
     left:0;
     width: 100%;
-    height: 50px;
+    height: 48px;
     padding: 0 0 0 10px;
     box-sizing: border-box;
     color: #fff;
@@ -226,6 +227,11 @@
     justify-content: flex-start;
     align-items: center;
   }
+
+  .pdf-preview__title-text img {
+    margin-right: 10px;
+  }
+
   .pdf-preview__title-text span {
     padding: 0 20px 0 10px;
   }
