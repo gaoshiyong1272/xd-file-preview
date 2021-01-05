@@ -4,16 +4,14 @@ const MD5 = require('md5.js');
 import {iconData, typeHeader } from "./../contact";
 
 class Helper {
-
-
   hideScroll(type){
     let body = document.getElementsByTagName('body')[0];
     if (type === 1) {
       body.style.overflowY = 'hidden';
       body.style.height = '100%';
     } else {
-      body.style.overflowY = 'auto';
-      body.style.height = 'auto';
+      body.style.overflowY = '';
+      body.style.height = '';
     }
   };
 

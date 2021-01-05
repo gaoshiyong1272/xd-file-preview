@@ -1,11 +1,12 @@
 {
   "name": "gxd-file-preview",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": false,
   "description": "vue 文件在线预览展示功能，支持文件（PDF，PNG，JPEG，JPG，GIF，DOC，DOCX，PPT，PPTX，ELXS，ELX）",
   "scripts": {
     "dev": "vue-cli-service serve",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "build": "vue-cli-service build"
   },
   "dependencies": {
     "core-js": "^2.6.10",

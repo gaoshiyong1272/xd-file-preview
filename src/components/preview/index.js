@@ -8,30 +8,6 @@ import helper from "./helper";
 import {iconData, imagesType , wordType, pdfType} from './../contact';
 import Loading from "./loading";
 
-/**
- * @description 创建loading实例
- * @type {ExtendedVue<Vue, unknown, unknown, unknown, Record<never, any>>}
- */
-const loadingVue = Vue.extend(Loading);
-let $loading = new loadingVue({
-  el: document.createElement('div'),
-  props: {
-    show: {
-      type: Boolean,
-      default: true
-    }
-  }
-});
-document.body.appendChild($loading.$el);
-
-/**
- * @description 销毁loading实例
- */
-const $destroy = () => {
-  $loading.$destroy();
-  $loading.$el.parentNode.removeChild($loading.$el);
-};
-
 
 /**
  * @description 文件预览功能
@@ -41,6 +17,31 @@ const $destroy = () => {
  * @param options.url //文件地址（必填）
  */
 export function preview(options={}) {
+  /**
+   * @description 创建loading实例
+   * @type {ExtendedVue<Vue, unknown, unknown, unknown, Record<never, any>>}
+   */
+  const loadingVue = Vue.extend(Loading);
+  let $loading = new loadingVue({
+    el: document.createElement('div'),
+    props: {
+      show: {
+        type: Boolean,
+        default: true
+      }
+    }
+  });
+  document.body.appendChild($loading.$el);
+
+  /**
+   * @description 销毁loading实例
+   */
+  const $destroy = () => {
+    $loading.$destroy();
+    $loading.$el.parentNode.removeChild($loading.$el);
+  };
+
+
   options['src'] = iconData.loadicon;
   options['source'] = options['url'];
   helper.getFileBase64(options.url, options.name)

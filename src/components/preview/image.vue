@@ -300,7 +300,7 @@
   .img-preview-title {
     width: 100%;
     height: 48px;
-    background: rgba(0, 0, 0, 0.5);
+    background: #333;
     color: #fff;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
   }
@@ -352,7 +352,7 @@
     left: 0;
     right: 0;
     height: 0;
-    background: #000;
+    background: #333;
   }
 
   .img-preview-close {
