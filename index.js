@@ -5,8 +5,7 @@ import helper from "./src/components/preview/helper";
 const install = function (Vue, options) {
   if (install.installed) return;
   install.installed = true;
-
-  Vue.prototype.$options = options;
+  Vue.prototype.$xdOptions = options;
   Vue.prototype.$preview = preview;
   Vue.prototype.$fileHelper = helper;
   console.log('Vue.use()=> options', options);

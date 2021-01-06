@@ -6,23 +6,16 @@
         <input class="pdf-preview__input" v-model.number="page" type="number">
         <span>/ {{numPages}}</span>
         <button class="btn" @click="download">下载</button>
-        <span>{{info.name}}.{{options['type'].toLocaleLowerCase()}}</span>
+        <span>{{info.name|getFileName(options['type'].toLocaleLowerCase())}}</span>
       </div>
       <div class="pdf-preview__title-close" @click="closeHandle(options.ele)"><i class=" iconfont iconwrong"></i></div>
     </div>
     <div class="pdf-preview__content" :style="`width: ${getWdith}`">
-      <pdf
-        class="pdf-preview__content-pdf"
-        ref="pdf"
-        :src="src"
-        :page="page"
-        :rotate="rotate"
-        @password="password"
-        @progress="loadedRatio = $event"
-        @error="error"
-        @num-pages="numPages = $event"
-        @link-clicked="page = $event">
-      </pdf>
+      <xd-pdf
+        :file-url="info['response']"
+        @num-pages="setTotalNumPages"
+        :current-pages="page"
+      ></xd-pdf>
     </div>
     <div class="img-preview__toolbar">
       <span>
@@ -37,9 +30,9 @@
   </div>
 </template>
 <script>
-  import pdf from 'vue-pdf'
   import helper from "./helper";
   import download from 'downloadjs';
+  import XdPdf from "@/components/XdPdf";
 
   export default {
     name: "xdPdfPreview",
@@ -51,7 +44,7 @@
         }
       },
     },
-    components: {pdf},
+    components: {XdPdf},
     data() {
       return {
         src: '',
@@ -63,16 +56,25 @@
         info: null,
       }
     },
+    filters:{
+      getFileName(name, type){
+        if(name.indexOf(`.${type}`) === -1) {
+          return `${name}.${type}`
+        }
+        return name;
+      }
+    },
     watch:{
       options(val){
         this.info = val;
         if(this.info['url']) {
-          this.src = this.info['url'];
+          this.src= this.info['url']
         }
       },
     },
     created(){
       this.info = this.options;
+
     },
     computed:{
       getWdith() {
@@ -80,12 +82,17 @@
       },
     },
     methods: {
+      /**
+       * @description 设置总页数
+       */
+      setTotalNumPages(num){
+        this.numPages = num;
+      },
       closeHandle(id) {
         this.close(id);
       },
 
       download(){
-        console.log(this.info)
         download(this.info['response'], this.info['name'])
       },
 

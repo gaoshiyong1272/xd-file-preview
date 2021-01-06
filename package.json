@@ -1,6 +1,6 @@
 {
   "name": "gxd-file-preview",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "private": false,
   "description": "vue 文件在线预览展示功能，支持文件（PDF，PNG，JPEG，JPG，GIF，DOC，DOCX，PPT，PPTX，ELXS，ELX）",
   "scripts": {
@@ -10,11 +10,10 @@
   },
   "dependencies": {
     "core-js": "^2.6.10",
-    "gxd-helper": "^1.2.11",
-    "vue": "^2.6.10",
-    "vue-pdf": "^4.2.0",
+    "downloadjs": "^1.4.7",
     "md5.js": "^1.3.5",
-    "downloadjs": "^1.4.7"
+    "vue": "^2.6.10",
+    "vue-pdf": "^4.2.0"
   },
   "repository": {
     "type": "git",

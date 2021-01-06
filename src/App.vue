@@ -5,18 +5,29 @@
 <script>
   export default {
     name: 'app',
-    components: {
+    components: {},
+    data(){
+      return {
 
+      }
     },
     created() {
-      this.$preview({
-        url: 'https://testimg.tiangongy.com/100601/a024b86760bb1ff3b38f25ae2e0b9bdf11', //图片
-        //url: 'https://testimg.tiangongy.com/100601/9958ff80d202f91b347b14b5c56f14e8', // xlsx
-        //url: 'https://testimg.tiangongy.com/100601/12d7e6a9b0b9169b800fbb29061212c2', //pptx
-        //url: 'https://testimg.tiangongy.com/100601/ce44c69f3075334e6c624b8180a42804', //doc,
-        //url: 'https://testimg.tiangongy.com/100601/3b85b4f1c3accdb4bb9f7e42e1f9070e',
-        fid: 'aadadads'
-      })
+      setTimeout(()=>{
+        this.$preview({
+          //url: 'https://testimg.tiangongy.com/100601/a024b86760bb1ff3b38f25ae2e0b9bdf', //图片
+          //url: 'https://testimg.tiangongy.com/100601/9958ff80d202f91b347b14b5c56f14e8', // xlsx
+          //url: 'https://testimg.tiangongy.com/100601/12d7e6a9b0b9169b800fbb29061212c2', //pptx
+          //url: 'https://testimg.tiangongy.com/100601/ce44c69f3075334e6c624b8180a42804', //doc,
+          //url: 'https://testimg.tiangongy.com/100601/3b85b4f1c3accdb4bb9f7e42e1f9070e',
+          url:'http://storage.xuetangx.com/public_assets/xuetangx/PDF/PlayerAPI_v1.0.6.pdf',
+          //url:'https://jfb-public-images.oss-cn-qingdao.aliyuncs.com/admin-upload/202101052326075832.mp3',
+          fid: 'aadadads'
+        })
+      }, 2000);
+
+    },
+    methods:{
+
     }
   }
 </script>
