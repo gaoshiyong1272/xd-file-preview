@@ -3,11 +3,10 @@
     <div class="img-preview-title" ref="imgPreviewHeader">
       <div class="img-preview-l" v-if="options.status">
         <img :src="options.icon" width="30" height="30">
-        <span v-html="options.name"></span>
-        <span>.{{options['type'].toLocaleLowerCase()}}</span>
+        <span>{{info.name|getFileName(options['type'].toLocaleLowerCase())}}</span>
         <button class="btn" @click="download">下载</button>
       </div>
-      <div class="img-preview-close" @click="closeHandle(options.ele)"><i class="iconfont iconwrong"></i></div>
+      <div class="img-preview-close" @click="closeHandle(options.ele)"><i class="fileIconfont iconwrong"></i></div>
     </div>
     <div class="img-preview-content">
       <div v-show="options.status" class="img-preview-content-box" @click="closeHandle(options.ele)"
@@ -37,11 +36,11 @@
     </div>
     <div class="img-preview-toolbar" v-if="options.status && isShowToolbar">
       <span>
-        <i class="iconfont iconfangda" @click="zoomHandle(1)"></i>
-        <i class="iconfont iconsuoxiao" @click="zoomHandle(-1)"></i>
-        <i class="iconfont iconzuozhuan" @click="rotateHandle(-1)"></i>
-        <i class="iconfont iconyouzhuan" @click="rotateHandle(1)"></i>
-        <i class="iconfont iconhuanyuan" @click="zoomOriginalSize()"></i>
+        <i class="fileIconfont iconfangda" @click="zoomHandle(1)"></i>
+        <i class="fileIconfont iconsuoxiao" @click="zoomHandle(-1)"></i>
+        <i class="fileIconfont iconzuozhuan" @click="rotateHandle(-1)"></i>
+        <i class="fileIconfont iconyouzhuan" @click="rotateHandle(1)"></i>
+        <i class="fileIconfont iconhuanyuan" @click="zoomOriginalSize()"></i>
       </span>
     </div>
     <div class="img-preview-bottom"></div>
@@ -67,6 +66,14 @@
     watch: {
       options(val) {
         this.info = val
+      }
+    },
+    filters: {
+      getFileName(name, type) {
+        if (name.indexOf(`.${type}`) === -1) {
+          return `${name}.${type}`
+        }
+        return name;
       }
     },
     data() {
@@ -365,12 +372,12 @@
     line-height: 30px;
   }
 
-  i.iconfont {
+  i.fileIconfont {
     font-size: 30px;
     font-weight: normal;
   }
 
-  i.iconfont.iconzuozhuan, i.iconfont.iconyouzhuan, i.iconfont.iconhuanyuan {
+  i.fileIconfont.iconzuozhuan, i.fileIconfont.iconyouzhuan, i.fileIconfont.iconhuanyuan {
     font-size: 28px;
     font-weight: normal !important;
   }
@@ -501,7 +508,7 @@
 
   }
 
-  i.iconfont.iconwenjian {
+  i.fileIconfont.iconwenjian {
     font-size: 60px;
     font-weight: normal;
   }

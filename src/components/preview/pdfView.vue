@@ -8,7 +8,7 @@
         <button class="btn" @click="download">下载</button>
         <span>{{info.name|getFileName(options['type'].toLocaleLowerCase())}}</span>
       </div>
-      <div class="pdf-preview__title-close" @click="closeHandle(options.ele)"><i class=" iconfont iconwrong"></i></div>
+      <div class="pdf-preview__title-close" @click="closeHandle(options.ele)"><i class="fileIconfont iconwrong"></i></div>
     </div>
     <div class="pdf-preview__content" :style="`width: ${getWdith}`">
       <xd-pdf
@@ -19,11 +19,11 @@
     </div>
     <div class="img-preview__toolbar">
       <span>
-        <i class="iconfont iconfangda" @click="zoomHandle(1)"></i>
-        <i class="iconfont iconsuoxiao" @click="zoomHandle(-1)"></i>
-        <i class="iconfont iconpageup" @click="overPage(-1)"></i>
-        <i class="iconfont iconpagedown" @click="overPage(1)"></i>
-        <i class="iconfont iconhuanyuan" @click="zoomOriginalSize()"></i>
+        <i class="fileIconfont iconfangda" @click="zoomHandle(1)"></i>
+        <i class="fileIconfont iconsuoxiao" @click="zoomHandle(-1)"></i>
+        <i class="fileIconfont iconpageup" @click="overPage(-1)"></i>
+        <i class="fileIconfont iconpagedown" @click="overPage(1)"></i>
+        <i class="fileIconfont iconhuanyuan" @click="zoomOriginalSize()"></i>
       </span>
     </div>
     <div class="img-preview__bottom"></div>
@@ -151,7 +151,8 @@
 </script>
 <style type="text/css">
   @import "style.css";
-  i.iconfont {
+
+  .pdf-preview i.fileIconfont {
     font-size: 30px;
     font-weight: normal;
   }

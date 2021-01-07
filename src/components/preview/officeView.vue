@@ -3,10 +3,10 @@
     <div class="office-preview-title">
       <div class="office-preview-text">
         <img :src="options.icon" height="30" width="30">
-        <span>{{options.name}}.{{options['type'].toLocaleLowerCase()}}</span>
+        <span>{{info.name|getFileName(options['type'].toLocaleLowerCase())}}</span>
         <button class="btn" @click="download">下载</button>
       </div>
-      <div class="office-preview-close" @click="handleCloseClick(options.ele)"><i class="iconfont iconwrong"></i></div>
+      <div class="office-preview-close" @click="handleCloseClick(options.ele)"><i class="fileIconfont iconwrong"></i></div>
     </div>
     <div class="office-preview-content">
       <div class="office-preview-content-box">
@@ -35,6 +35,14 @@
         this.getUrl(this.options['source'])
       }
 
+    },
+    filters: {
+      getFileName(name, type) {
+        if (name.indexOf(`.${type}`) === -1) {
+          return `${name}.${type}`
+        }
+        return name;
+      }
     },
     watch: {
       options(val) {
@@ -137,9 +145,6 @@
     line-height: 30px;
   }
 
-  .office-preview-close .el-icon-close {
-    font-weight: normal;
-  }
 
   .office-preview-content {
     height: -moz-calc(100% - 0);
