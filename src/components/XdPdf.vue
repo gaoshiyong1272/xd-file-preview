@@ -6,7 +6,7 @@
 </template>
 
 <script>
-  import XdLoadPdfScript from "@/components/XdLoadPdfScript";
+  import XdLoadPdfScript from "./XdLoadPdfScript";
 
   export default {
     name: 'XdPdf',
@@ -34,11 +34,16 @@
       },
     },
 
+    created(){
+      console.log('created', this.$xdOptions);
+    },
+
     methods: {
       /**
        * @description pdf 和 workerjs加载完毕事件
        */
       handleLoad(){
+        console.log('handleLoad')
         this.createCanvas();
         this.fileReader(this.fileUrl)
           .then(pdfArrayBuffer => {
@@ -68,6 +73,7 @@
         return new Promise((resolve, reject)=>{
           const reader = new FileReader();
           reader.onload = (e) =>{
+            console.log('fileReader', e.target['result']);
             let pdfArrayBuffer = new Uint8Array(e.target['result']);
             resolve(pdfArrayBuffer);
           };
@@ -75,39 +81,21 @@
         })
       },
 
-      getPdfFile(url) {
-        const _this = this
-        this.xhr.abort()// 请求中止
-        this.xhr.open('get', url, true)
-        this.xhr.responseType = 'blob';
-        this.xhr.onload = function () {
-          const reader = new FileReader();
-          let t = new Date().getTime();
-          reader.onload = function (e) {
-            let typedarray = new Uint8Array(e.target['result']);
-            console.log('111111', new Date().getTime() - t);
-            _this.renderFile(typedarray);
-            _this.$emit('onLoad', typedarray)
-          };
-          reader.readAsArrayBuffer(this.response);
-
-        }
-        this.xhr.send()
-      },
-
       /***
        * @description 生产pdf对象
        * @param pdfArrayBuffer
        */
       renderFile(pdfArrayBuffer) {
+        console.log('renderFile',pdfArrayBuffer);
         if(PDFJS !== undefined) {
           // 加载字体文件，避免字体显示不完成，——不加这两行不显示日期
           PDFJS.cMapUrl = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.288/cmaps/';
           PDFJS.cMapPacked = true;
-          PDFJS['getDocument'](pdfArrayBuffer).then(pdf => {
-            if (pdf) {
-              this.pdfFile = pdf;
-              let pageNum = pdf.numPages;
+          PDFJS['getDocument'](pdfArrayBuffer).then(pdfFile => {
+            console.log('getDocument', pdfFile);
+            if (pdfFile) {
+              this.pdfFile = pdfFile;
+              let pageNum = this.pdfFile.numPages;
               this.$emit('num-pages', pageNum);
               this.openPage(this.currentPages);
             }

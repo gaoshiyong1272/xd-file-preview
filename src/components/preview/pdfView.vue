@@ -32,7 +32,7 @@
 <script>
   import helper from "./helper";
   import download from 'downloadjs';
-  import XdPdf from "@/components/XdPdf";
+  import XdPdf from "../XdPdf";
 
   export default {
     name: "xdPdfPreview",

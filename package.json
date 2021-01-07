@@ -1,12 +1,15 @@
 {
   "name": "gxd-file-preview",
-  "version": "1.0.4",
+  "version": "1.0.16",
   "private": false,
   "description": "vue 文件在线预览展示功能，支持文件（PDF，PNG，JPEG，JPG，GIF，DOC，DOCX，PPT，PPTX，ELXS，ELX）",
   "scripts": {
+    "library": "vue-cli-service build --no-clean --target lib --name gxd --dest lib --entry src/install.js",
+    "library:dev": "vue-cli-service build --no-clean --target lib --name gxdSource --dest lib --entry src/install.js",
+    "remove": "rm ./lib/gxdSource.common.js && rm ./lib/gxdSource.umd.min.js && rm ./lib/gxd.common.js &&  rm ./lib/gxd.umd.js && rm ./lib/demo.html",
+    "build": "npm run library && npm run library:dev && npm run remove",
     "dev": "vue-cli-service serve",
-    "lint": "vue-cli-service lint",
-    "build": "vue-cli-service build"
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "core-js": "^2.6.10",

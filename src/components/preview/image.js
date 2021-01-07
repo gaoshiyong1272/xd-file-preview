@@ -1,5 +1,6 @@
-import Vue from 'vue';
-import imgPreview  from "./image.vue";
+'use strict';
+
+import imgPreview  from "./imageView";
 import helper from "./helper";
 
 /**
@@ -9,9 +10,10 @@ import helper from "./helper";
  * @param options.name 文件名称
  * @param options.type 文件类型
  * @param options.url //图片地址
+ * @param $vue Vue
  */
-export default function (options) {
-	let $vm = helper.createElement(options, Vue, imgPreview);
+export default function (options, $vue) {
+	let $vm = helper.createElement(options, $vue, imgPreview);
 	helper.hideScroll(1);
 	document.body.appendChild($vm.$el);
 }

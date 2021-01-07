@@ -21,7 +21,7 @@
   import download from 'downloadjs';
 
   export default {
-    name: "office-preview",
+    name: "XdOfficePreview",
     props: {
       options:{
         type: Object|null,

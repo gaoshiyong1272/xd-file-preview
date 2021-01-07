@@ -1,9 +1,19 @@
-import Vue from 'vue';
-import pdfPreview  from "./pdf.vue";
+'use strict';
+
+import pdfPreview  from "./pdfView";
 import helper from "./helper";
 
-export default function (options) {
-	let $vm = helper.createElement(options, Vue, pdfPreview);
+/**
+ * @description PDF预览功能
+ * @param options {object}
+ * @param options.fid 文件ID，唯一id（必填）
+ * @param options.name 文件名称
+ * @param options.type 文件类型
+ * @param options.url // PDF地址
+ * @param $vue Vue
+ */
+export default function (options, $vue) {
+	let $vm = helper.createElement(options, $vue, pdfPreview);
 	helper.hideScroll(1);
 	document.body.appendChild($vm.$el);
 }
