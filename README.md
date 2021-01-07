@@ -2,7 +2,7 @@
 
 #### 介绍
 ```text
-vue 文件在线预览展示功能
+vue 文件在线预览展示功能，支持文件（PDF，PNG，JPEG，JPG，GIF，DOC，DOCX，PPT，PPTX，ELXS，ELX）
 ```
 
 
