@@ -152,7 +152,7 @@
   }
 
   .office-preview-content  iframe {
-    background: #000;
+    background: rgba(0,0,0,.5);
     height: 100%;
   }
 

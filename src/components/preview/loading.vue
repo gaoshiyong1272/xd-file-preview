@@ -39,6 +39,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 2097;
   }
   .xd-loading-box {
     height: 120px;
