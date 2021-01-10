@@ -13,5 +13,6 @@ import helper from "./helper";
  * @param $vue Vue
  */
 export default function (options, $vue) {
+  console.log('111,PDF预览功能');
 	 helper.createElement(options, $vue, imgPreview);
 }

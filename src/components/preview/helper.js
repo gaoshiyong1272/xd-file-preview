@@ -288,6 +288,7 @@ class Helper {
    * @param view vue文件（必填）
    */
   createElement(options, Vue, view){
+    console.log('PDF预览功能', options);
     let str = `${options.name}${options['fid']}`;
     let elId = `img-${this.md5Fn(str)}`;
     let ele = document.getElementById(elId);

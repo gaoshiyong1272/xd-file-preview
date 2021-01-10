@@ -8,9 +8,11 @@ import {iconData, imagesType , wordType, pdfType} from './../contact';
 import Loading from "./loading";
 
 function check(options, $vue) {
+  console.log('options', options)
   //错误图片
   if (!options.status) {
     image(options, $vue);
+    return;
   }
 
   //图片类型
@@ -24,7 +26,6 @@ function check(options, $vue) {
   }
   //Pdf文件类型
   if (JSON.stringify(pdfType).indexOf(options['type']) !== -1) {
-    console.log('Pdf文件类型', pdf);
     pdf(options, $vue);
   }
 }
@@ -44,7 +45,6 @@ export function preview(options={}, $vue) {
   //已经加载过的文件
   if(options['response'] && helper.checkVarType(options['response']) === 'blob') {
     check(options, $vue);
-    return
   }
 
   let keyMd5 = helper.md5Fn(`${options.url}${options.fid}`);
@@ -90,7 +90,7 @@ export function preview(options={}, $vue) {
         options = Object.assign({}, options, res);
         options['status'] = true;
         __File_Save[keyMd5] = options;
-        check(res, $vue);
+        check(options, $vue);
       }, (deTime <=10? 10: deTime));
     })
     .catch(res=>{
