@@ -14,7 +14,5 @@ import helper from "./helper";
  * @param $vue Vue
  */
 export default function (options, $vue) {
-	let $vm = helper.createElement(options, $vue, officePreview);
-	helper.hideScroll(1);
-	document.body.appendChild($vm.$el);
+	helper.createElement(options, $vue, officePreview);
 }

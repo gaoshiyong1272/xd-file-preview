@@ -15,6 +15,36 @@ class Helper {
     }
   };
 
+  /**
+   * @description 字符串截取
+   * @param val
+   * @param len
+   */
+  cutStringLen(val, len = 10) {
+    let fix = '...';
+    let newLength = 0;
+    let newStr = "";
+    let chineseRegex = /[^\x00-\xff]/g;
+    let singleChar = "";
+    let strLength = val.replace(chineseRegex, "**").length;
+    for (let i = 0; i < strLength; i++) {
+      singleChar = val.charAt(i).toString();
+      if (singleChar.match(chineseRegex) != null) {
+        newLength += 2;
+      } else {
+        newLength++;
+      }
+      if (newLength > len) {
+        break;
+      }
+      newStr += singleChar;
+    }
+    if (strLength > len) {
+      newStr += fix;
+    }
+    return newStr;
+  }
+
   checkVarType(obj) {
     let toString = Object.prototype.toString;
     let map = {
@@ -27,7 +57,8 @@ class Helper {
       '[object RegExp]': 'regExp',
       '[object Undefined]': 'undefined',
       '[object Null]': 'null',
-      '[object Object]': 'object'
+      '[object Object]': 'object',
+      '[object Blob]' : 'blob'
     };
     return map[toString.call(obj)];
   }
@@ -278,7 +309,9 @@ class Helper {
       ele.style.display = "none";
       this.hideScroll(-1);
     };
-    return $view;
+
+    document.body.appendChild($view.$el);
+    this.hideScroll(1);
   }
 
 }

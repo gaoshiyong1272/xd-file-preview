@@ -5,9 +5,12 @@
 vue 文件在线预览展示功能，支持文件（PDF，PNG，JPEG，JPG，GIF，DOC，DOCX，PPT，PPTX，ELXS，ELX）
 ```
 
+#### 预览
+![demo](http://static.e56buy.com/1610238353869.jpg ''demo'')
 
 #### 安装
 ```bash
+
 npm i gxd-file-preview --save --registry  https://registry.npm.taobao.org
 ```
 

@@ -66,6 +66,7 @@
     watch: {
       options(val) {
         this.info = val
+        console.log('options',val)
       }
     },
     filters: {

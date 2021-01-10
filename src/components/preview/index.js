@@ -7,6 +7,29 @@ import helper from "./helper";
 import {iconData, imagesType , wordType, pdfType} from './../contact';
 import Loading from "./loading";
 
+function check(options, $vue) {
+  //错误图片
+  if (!options.status) {
+    image(options, $vue);
+  }
+
+  //图片类型
+  if (JSON.stringify(imagesType).indexOf(options['type']) !== -1) {
+    image(options, $vue);
+  }
+
+  //word文件类型
+  if (JSON.stringify(wordType).indexOf(options['type']) !== -1) {
+    office(options, $vue);
+  }
+  //Pdf文件类型
+  if (JSON.stringify(pdfType).indexOf(options['type']) !== -1) {
+    console.log('Pdf文件类型', pdf);
+    pdf(options, $vue);
+  }
+}
+
+let __File_Save = {};
 
 /**
  * @description 文件预览功能
@@ -17,7 +40,18 @@ import Loading from "./loading";
  * @param $vue
  */
 export function preview(options={}, $vue) {
-  console.log('ddd',$vue);
+
+  //已经加载过的文件
+  if(options['response'] && helper.checkVarType(options['response']) === 'blob') {
+    check(options, $vue);
+    return
+  }
+
+  let keyMd5 = helper.md5Fn(`${options.url}${options.fid}`);
+  if(__File_Save[keyMd5]) {
+    check(__File_Save[keyMd5], $vue);
+    return
+  }
 
   /**
    * @description 创建loading实例
@@ -44,40 +78,27 @@ export function preview(options={}, $vue) {
   };
 
   let t = new Date().getTime();
-
   options['src'] = iconData.loadicon;
   options['source'] = options['url'];
+
   helper.getFileBase64(options.url, options.name)
     .then(res=>{
       let now = new Date().getTime();
       let deTime = 1000 - (now - t);
-      console.log('deTime', deTime)
       setTimeout(()=>{
-          $destroy();
-          options = Object.assign({}, options, res);
-          options['status'] = true;
-
-          //图片类型
-          if (JSON.stringify(imagesType).indexOf(res['type']) !== -1) {
-            image(options, $vue);
-          }
-
-          //word文件类型
-          if (JSON.stringify(wordType).indexOf(res['type']) !== -1) {
-            office(options, $vue);
-          }
-          //Pdf文件类型
-          if (JSON.stringify(pdfType).indexOf(res['type']) !== -1) {
-            console.log('Pdf文件类型', pdf);
-            pdf(options, $vue);
-          }
-        }, (deTime <=10? 10: deTime));
-        console.log('getFileBase64',options)
+        $destroy();
+        options = Object.assign({}, options, res);
+        options['status'] = true;
+        __File_Save[keyMd5] = options;
+        check(res, $vue);
+      }, (deTime <=10? 10: deTime));
     })
     .catch(res=>{
       console.error('res',options, res);
       options['status'] = false;
       $destroy();
+      __File_Save[keyMd5] = options;
+      console.log(options);
       image(options, $vue);
     });
 }
