@@ -4,19 +4,19 @@
       <div class="xd-file-list__item-icon">
         <img v-if="item['icon']" :src="item['icon']" alt="icon">
         <div v-else><i class="fileIconfont iconwenjian"></i></div>
-
       </div>
       <div class="xd-file-list__item-text">
         <div class="xd-file-list__item-text-title" :title="getName(item)">{{getFileName(item)}}</div>
         <div class="xd-file-list__item-text-link" @click="handleClick(item)" :style="`color: ${linkColor}`">点击查看</div>
       </div>
+      <i class="fileIconfont iconyduicuowushixin" @click.stop="handleRemoveClick(item,index)"></i>
     </div>
   </div>
 </template>
 
 <script>
   import helper from "@/components/preview/helper";
-  import  {iconData} from "@/components/contact";
+  import {iconData} from "@/components/contact";
 
   export default {
     name: "XdFileListPreview",
@@ -51,7 +51,7 @@
 
     methods: {
       setDataValue(val) {
-        if (val.length > 0){
+        if (val.length > 0) {
           this.dataList = val;
 
           //未加载过
@@ -63,7 +63,7 @@
                   res['status'] = true;
                   temp.push(res);
                 })
-                .catch(res=>{
+                .catch(res => {
                   temp.push({
                     src: iconData.loadicon,
                     status: false,
@@ -101,6 +101,12 @@
       handleClick(item) {
         console.log('handleClick', item);
         this.$preview(item)
+      },
+
+      handleRemoveClick(item, index) {
+        this.$emit('remove', item, () => {
+          this.dataList.splice(index, 1);
+        });
       }
     }
 
@@ -120,6 +126,7 @@
 
 
     &__item {
+      position: relative;
       padding: 10px;
       box-sizing: border-box;
       height: 68px;
@@ -156,8 +163,8 @@
         i {
           margin-top: 3px;
           font-size: 40px !important;
-           width: 100%;
-           height: 100%;
+          width: 100%;
+          height: 100%;
           display: inline-block;
         }
       }
@@ -181,6 +188,22 @@
         &-link:hover {
           text-decoration: underline;
         }
+      }
+
+      & i.iconyduicuowushixin {
+        cursor: pointer;
+        display: none;
+        position: absolute;
+        top: 2px;
+        right: -7px;
+        width: 30px;
+        height: 30px;
+        font-size: 21px;
+        color: #999;
+      }
+
+      &:hover i.iconyduicuowushixin {
+        display: block;
       }
     }
   }

@@ -31,10 +31,23 @@
     created() {
     },
     methods: {
-      handleRemoveClick(item, index) {
-        console.log(item, index)
+      /**
+       * @description 删除图片事件
+       * @param item {Object} 当前被删除的文件对象
+       * @param done {function} 删除文件完成回调函数
+       */
+      handleRemoveClick(item, done) {
+        console.log('aaaaaaaa')
+        setTimeout(() => {
+          console.log('handleRemoveClick', item);
+          done()
+        }, 2000);
       },
-      handleClick(){
+
+      /**
+       * @description 点击查看预览功能
+       */
+      handleClick() {
         this.$preview({
           //url: 'https://testimg.tiangongy.com/100601/a024b86760bb1ff3b38f25ae2e0b9bdf', //图片
           //url: 'https://testimg.tiangongy.com/100601/9958ff80d202f91b347b14b5c56f14e8', // xlsx
