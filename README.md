@@ -7,7 +7,7 @@ vue 文件在线预览展示功能，支持文件（PDF，PNG，JPEG，JPG，GIF
 
 #### 预览
 ```markdown
-![demo](http://static.e56buy.com/1610238353869.jpg ''demo'')
+![demo](http://static.e56buy.com/1610238353869.jpg "demo")
 ```
 
 
